@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Actualización de la interfaz de bienvenida  -->
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
