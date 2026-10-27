@@ -1,31 +1,33 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\VentaController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', fn () => redirect()->route(Auth::check() ? 'dashboard' : 'login'));
+
+// ---- Login manual (solo invitados) ----
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.intentar');
+
+    Route::get('/registro', [AuthController::class, 'showRegistro'])->name('registro');
+    Route::post('/registro', [AuthController::class, 'registro'])->name('registro.guardar');
 });
 
-// Ruta principal del Dashboard según el rol
-Route::get('/dashboard', function () {
-    $role = Auth::user()->role;
-
-    if ($role === 'gerente') {
-        return view('gerente.dashboard');
-    } elseif ($role === 'empleado') {
-        return view('empleado.dashboard');
-    }
-    
-    return view('cliente.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// Rutas del perfil
+// ---- Rutas protegidas (la autorización fina la hacen las Policies) ----
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-}); 
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-require __DIR__.'/auth.php';
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+    Route::resource('usuarios', UsuarioController::class)->parameters(['usuarios' => 'usuario']);
+    Route::resource('productos', ProductoController::class)->parameters(['productos' => 'producto']);
+    Route::resource('categorias', CategoriaController::class)->parameters(['categorias' => 'categoria']);
+    Route::resource('ventas', VentaController::class)->parameters(['ventas' => 'venta']);
+});
