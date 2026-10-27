@@ -7,13 +7,13 @@ use App\Models\Usuario;
 
 class ProductoPolicy
 {
-    /** Todos los usuarios autenticados pueden ver productos. */
-    public function viewAny(Usuario $actor): bool
+    /** Cualquier visitante (incluso sin sesión) puede ver productos. */
+    public function viewAny(?Usuario $actor): bool
     {
         return true;
     }
 
-    public function view(Usuario $actor, Producto $producto): bool
+    public function view(?Usuario $actor, Producto $producto): bool
     {
         return true;
     }
