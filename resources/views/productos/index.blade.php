@@ -46,6 +46,11 @@
                                         <button type="submit" class="text-red-600 hover:underline">Eliminar</button>
                                     </form>
                                 @endcan
+                                @guest
+                                    @if ($producto->existencia > 0)
+                                        <a href="{{ route('ventas.create', ['producto' => $producto->id]) }}" class="text-green-700 hover:underline">Comprar</a>
+                                    @endif
+                                @endguest
                                 @can('comprar-productos')
                                     @if ($producto->existencia > 0)
                                         <a href="{{ route('ventas.create', ['producto' => $producto->id]) }}" class="text-green-700 hover:underline">Comprar</a>

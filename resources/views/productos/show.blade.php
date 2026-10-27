@@ -24,6 +24,11 @@
             @can('update', $producto)
                 <a href="{{ route('productos.edit', $producto) }}" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Editar</a>
             @endcan
+            @guest
+                @if ($producto->existencia > 0)
+                    <a href="{{ route('ventas.create', ['producto' => $producto->id]) }}" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Iniciar sesión para comprar</a>
+                @endif
+            @endguest
             @can('comprar-productos')
                 @if ($producto->existencia > 0)
                     <a href="{{ route('ventas.create', ['producto' => $producto->id]) }}" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Comprar</a>

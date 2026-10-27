@@ -7,12 +7,13 @@ use App\Models\Usuario;
 
 class CategoriaPolicy
 {
-    public function viewAny(Usuario $actor): bool
+    /** Cualquier visitante (incluso sin sesión) puede ver categorías. */
+    public function viewAny(?Usuario $actor): bool
     {
         return true;
     }
 
-    public function view(Usuario $actor, Categoria $categoria): bool
+    public function view(?Usuario $actor, Categoria $categoria): bool
     {
         return true;
     }
