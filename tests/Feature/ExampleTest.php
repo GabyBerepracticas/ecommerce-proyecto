@@ -6,8 +6,18 @@ use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    public function test_la_raiz_redirige_al_login_si_no_hay_sesion(): void
+    protected function setUp(): void
     {
-        $this->get('/')->assertRedirect('/login');
+        parent::setUp();
+
+        $this->withoutVite();
+    }
+
+    public function test_la_raiz_es_publica_y_muestra_botones_de_acceso(): void
+    {
+        $this->get('/')
+            ->assertOk()
+            ->assertSee('Iniciar sesión')
+            ->assertSee('Registrarse');
     }
 }

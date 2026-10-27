@@ -19,9 +19,11 @@ class AutorizacionTest extends TestCase
         $this->withoutVite();
     }
 
-    public function test_invitado_es_redirigido_al_login(): void
+    public function test_invitado_puede_ver_productos_pero_no_ventas(): void
     {
-        $this->get('/productos')->assertRedirect('/login');
+        $this->get('/productos')->assertOk();
+        $this->get('/ventas')->assertRedirect('/login');
+        $this->get('/productos/create')->assertRedirect('/login');
     }
 
     public function test_login_manual_con_credenciales_correctas(): void
