@@ -1,15 +1,11 @@
-@props(['name', 'label', 'type' => 'text', 'value' => null])
+@if (session('exito'))
+    <div class="mb-6 rounded-md bg-green-100 border border-green-300 text-green-800 px-4 py-3 text-sm">
+        {{ session('exito') }}
+    </div>
+@endif
 
-<div class="mb-4">
-    <label for="{{ $name }}" class="block text-sm font-medium text-gray-700">{{ $label }}</label>
-    <input
-        id="{{ $name }}"
-        name="{{ $name }}"
-        type="{{ $type }}"
-        value="{{ $type === 'password' ? '' : old($name, $value) }}"
-        {{ $attributes->merge(['class' => 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500']) }}
-    >
-    @error($name)
-        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-    @enderror
-</div>
+@if (session('error'))
+    <div class="mb-6 rounded-md bg-red-100 border border-red-300 text-red-800 px-4 py-3 text-sm">
+        {{ session('error') }}
+    </div>
+@endif
